@@ -1,5 +1,4 @@
-SPLIT_KEYBOARD = yes
-SERIAL_DRIVER = usart
 COMBO_ENABLE = yes
-VIA_ENABLE = yes
 LTO_ENABLE = yes
+VIA_ENABLE = yes
+VIAL_ENABLE = yes

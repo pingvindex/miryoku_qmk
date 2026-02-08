@@ -26,8 +26,6 @@ enum layers {
 
 // === THUMB KEY DEFINITIONS ===
 #define EXT_TAB  LT(_EXT, KC_TAB)     // Hold=EXT layer, Tap=Tab
-#define SFT_SPC  LSFT_T(KC_SPC)       // Hold=Shift, Tap=Space
-#define SFT_BSP  RSFT_T(KC_BSPC)      // Hold=Shift, Tap=Backspace
 #define SYM_ENT  LT(_SYM, KC_ENT)     // Hold=SYM layer, Tap=Enter
 #define FNC_ENT  LT(_FNC, KC_ENT)     // Hold=FNC layer, Tap=Enter (for EXT layer)
 
@@ -88,29 +86,36 @@ enum layers {
 #define OS_ALT  OSM(MOD_LALT)
 #define OS_GUI  OSM(MOD_LGUI)
 
+// === CHORDAL HOLD LAYOUT ===
+// Defines hand assignment for each matrix position.
+// 'L' = left hand, 'R' = right hand, '*' = wildcard (thumb keys)
+// Matrix: rows 0-3 = left half, rows 4-7 = right half
+// Row 3 and 7 are thumb rows (3 keys + 3 unused)
+const char chordal_hold_layout[MATRIX_ROWS][MATRIX_COLS] PROGMEM =
+    LAYOUT_split_3x6_3(
+        'L', 'L', 'L', 'L', 'L', 'L',  'R', 'R', 'R', 'R', 'R', 'R',
+        'L', 'L', 'L', 'L', 'L', 'L',  'R', 'R', 'R', 'R', 'R', 'R',
+        'L', 'L', 'L', 'L', 'L', 'L',  'R', 'R', 'R', 'R', 'R', 'R',
+                       '*', '*', '*',  '*', '*', '*'
+    );
+
 // === COMBO DEFINITIONS ===
 enum combos {
-    COMBO_ESC,        // W+E → Escape
-    COMBO_BSPC,       // E+R → Backspace
     COMBO_SQT,        // U+I → Single quote
     COMBO_DQT,        // I+O → Double quote
-    COMBO_ENT,        // J+K → Enter
     COMBO_GRV,        // ,+. → Grave
     COMBO_TILD,       // .+/ → Tilde
     COMBO_BSLS,       // M+, → Backslash
-    COMBO_PIPE,       // M+. → Pipe (M+, and ,+. are different, so using M+.)
-    COMBO_AERO,       // EXT_TAB + RALT → AERO layer
-    COMBO_SETT,       // LGUI + EXT_TAB → SETTINGS layer
+    COMBO_PIPE,       // M+. → Pipe
+    COMBO_AERO,       // EXT_TAB + RSFT → AERO layer
+    COMBO_SETT,       // LSFT + EXT_TAB → SETTINGS layer
     COMBO_LENGTH
 };
 
 uint16_t COMBO_LEN = COMBO_LENGTH;
 
-// const uint16_t PROGMEM esc_combo[]  = {KC_W, KC_E, COMBO_END};
-// const uint16_t PROGMEM bspc_combo[] = {KC_E, KC_R, COMBO_END};
 const uint16_t PROGMEM sqt_combo[]  = {KC_U, KC_I, COMBO_END};
 const uint16_t PROGMEM dqt_combo[]  = {KC_I, KC_O, COMBO_END};
-// const uint16_t PROGMEM ent_combo[]  = {HM_J, HM_K, COMBO_END};
 const uint16_t PROGMEM grv_combo[]  = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM tild_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
 const uint16_t PROGMEM bsls_combo[] = {KC_M, KC_COMM, COMBO_END};
@@ -119,11 +124,8 @@ const uint16_t PROGMEM aero_combo[] = {EXT_TAB, KC_RSFT, COMBO_END};
 const uint16_t PROGMEM sett_combo[] = {KC_LSFT, EXT_TAB, COMBO_END};
 
 combo_t key_combos[] = {
-    // [COMBO_ESC]  = COMBO(esc_combo, KC_ESC),
-    // [COMBO_BSPC] = COMBO(bspc_combo, KC_BSPC),
     [COMBO_SQT]  = COMBO(sqt_combo, KC_QUOT),
     [COMBO_DQT]  = COMBO(dqt_combo, LSFT(KC_QUOT)),
-    [COMBO_ENT]  = COMBO(ent_combo, KC_ENT),
     [COMBO_GRV]  = COMBO(grv_combo, KC_GRV),
     [COMBO_TILD] = COMBO(tild_combo, LSFT(KC_GRV)),
     [COMBO_BSLS] = COMBO(bsls_combo, KC_BSLS),
@@ -137,19 +139,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
      * BASE Layer - QWERTY with Homerow Mods
      * ┌─────┬─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┬─────┐
-     * │BSPC │  Q  │  W  │  E  │  R  │  T  │   │  Y  │  U  │  I  │  O  │  P  │CAPS │
+     * │ ESC │  Q  │  W  │  E  │  R  │  T  │   │  Y  │  U  │  I  │  O  │  P  │CAPS │
      * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-     * │ ESC │  A  │S/CTL│D/ALT│F/GUI│  G  │   │  H  │J/GUI│K/ALT│L/CTL│  ;  │  '  │
+     * │BSPC │  A  │S/CTL│D/ALT│F/GUI│  G  │   │  H  │J/GUI│K/ALT│L/CTL│  ;  │  '  │
      * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-     * │ENT  │  Z  │  X  │  C  │  V  │  B  │   │  N  │  M  │  ,  │  .  │  /  │DEL  │
+     * │ ENT │  Z  │  X  │  C  │  V  │  B  │   │  N  │  M  │  ,  │  .  │  /  │ DEL │
      * └─────┴─────┴─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┴─────┴─────┘
-     *                   │SHFT │T/EXT│ SPC │   │BSPC │E/SYM│SHFT  │
+     *                   │LSFT │T/EXT│ SPC │   │BSPC │E/SYM│RSFT │
      *                   └─────┴─────┴─────┘   └─────┴─────┴─────┘
      */
     [_BASE] = LAYOUT_split_3x6_3(
-        KC_CAPS,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_BSPC,
-        KC_ESC,  KC_A,    HM_S,    HM_D,    HM_F,    KC_G,                               KC_H,    HM_J,    HM_K,    HM_L,    KC_SCLN, KC_QUOT,
-        KC_ENT, KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
+        KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_CAPS,
+        KC_BSPC, KC_A,    HM_S,    HM_D,    HM_F,    KC_G,                               KC_H,    HM_J,    HM_K,    HM_L,    KC_SCLN, KC_QUOT,
+        KC_ENT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
                                             KC_LSFT, EXT_TAB, KC_SPC,          KC_BSPC, SYM_ENT, KC_RSFT
     ),
 
