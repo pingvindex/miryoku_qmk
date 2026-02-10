@@ -28,6 +28,8 @@ enum layers {
 #define EXT_TAB  LT(_EXT, KC_TAB)     // Hold=EXT layer, Tap=Tab
 #define SYM_ENT  LT(_SYM, KC_ENT)     // Hold=SYM layer, Tap=Enter
 #define FNC_ENT  LT(_FNC, KC_ENT)     // Hold=FNC layer, Tap=Enter (for EXT layer)
+#define SFT_SPC  LSFT_T(KC_SPC)
+#define SFT_BSPC  RSFT_T(KC_BSPC)
 
 // === SHORTCUT DEFINITIONS ===
 // GUI shortcuts (Cmd on macOS)
@@ -41,6 +43,11 @@ enum layers {
 #define G_ENT   LGUI(KC_ENT)    // GUI+Enter
 #define G_BSP   LGUI(KC_BSPC)   // Delete word backward (macOS)
 #define G_DEL   LGUI(KC_DEL)    // Delete word forward
+
+#define AS_L LALT(LSFT(KC_LEFT))  // Alt+Shift+Left
+#define AS_R LALT(LSFT(KC_RGHT))  // Alt+Shift+Right
+#define GS_L LGUI(LSFT(KC_LEFT))  // Cmd+Shift+Left
+#define GS_R LGUI(LSFT(KC_RGHT))  // Cmd+Shift+Right
 
 // Ctrl+Shift combos
 #define CS_LBRC LCTL(LSFT(KC_LBRC))  // Ctrl+Shift+[
@@ -107,8 +114,8 @@ enum combos {
     COMBO_TILD,       // .+/ → Tilde
     COMBO_BSLS,       // M+, → Backslash
     COMBO_PIPE,       // M+. → Pipe
-    COMBO_AERO,       // EXT_TAB + RSFT → AERO layer
-    COMBO_SETT,       // LSFT + EXT_TAB → SETTINGS layer
+    COMBO_AERO,       //
+    COMBO_SETT,       //
     COMBO_LENGTH
 };
 
@@ -120,8 +127,8 @@ const uint16_t PROGMEM grv_combo[]  = {KC_COMM, KC_DOT, COMBO_END};
 const uint16_t PROGMEM tild_combo[] = {KC_DOT, KC_SLSH, COMBO_END};
 const uint16_t PROGMEM bsls_combo[] = {KC_M, KC_COMM, COMBO_END};
 const uint16_t PROGMEM pipe_combo[] = {KC_M, KC_DOT, COMBO_END};
-const uint16_t PROGMEM aero_combo[] = {EXT_TAB, KC_RSFT, COMBO_END};
-const uint16_t PROGMEM sett_combo[] = {KC_LSFT, EXT_TAB, COMBO_END};
+const uint16_t PROGMEM aero_combo[] = {MO(_EXT), KC_ENT, COMBO_END};
+const uint16_t PROGMEM sett_combo[] = {KC_TAB, MO(_EXT), COMBO_END};
 
 combo_t key_combos[] = {
     [COMBO_SQT]  = COMBO(sqt_combo, KC_QUOT),
@@ -152,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_CAPS,
         KC_BSPC, KC_A,    HM_S,    HM_D,    HM_F,    KC_G,                               KC_H,    HM_J,    HM_K,    HM_L,    KC_SCLN, KC_QUOT,
         KC_ENT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-                                            KC_LSFT, EXT_TAB, KC_SPC,          KC_BSPC, SYM_ENT, KC_RSFT
+                                            KC_TAB, MO(_EXT), SFT_SPC,          KC_BSPC, MO(_SYM), KC_ENT
     ),
 
     /*
@@ -187,10 +194,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
      *                   └─────┴─────┴─────┘   └─────┴─────┴─────┘
      */
     [_EXT] = LAYOUT_split_3x6_3(
-        _______, KC_ESC,  CS_LBRC, G_C,     G_ENT,   G_T,                                KC_PGUP, KC_HOME, KC_UP,   KC_END,  KC_CAPS, _______,
-        _______, G_A,     G_S,     KC_LALT, KC_LGUI, KC_LSFT,                            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_DEL,  KC_INS,
-        _______, G_Z,     G_X,     G_C,     G_V,     CS_RBRC,                            A_BSP,   KC_BSPC, G_BSP,   G_DEL,   A_DEL,   _______,
-                                            _______, _______, KC_LCTL,          KC_ENT,  FNC_ENT, _______
+        _______, KC_ESC,  CS_LBRC, G_C,     G_ENT,   G_T,                                KC_PGUP, AS_L, KC_UP,   AS_R,  GS_L, GS_R,
+        _______, G_A,     G_S,     KC_LALT, KC_LGUI, KC_LSFT,                            KC_PGDN, KC_LEFT, KC_DOWN, KC_RGHT, KC_HOME,  KC_END,
+        _______, G_Z,     G_X,     G_C,     G_V,     CS_RBRC,                            A_BSP, G_BSP,   G_DEL,   A_DEL,   KC_INS, _______,
+                                            _______, _______, KC_LCTL,          KC_BSPC,  MO(_FNC), MO(_AERO)
     ),
 
     /*
