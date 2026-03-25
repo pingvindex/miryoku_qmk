@@ -159,7 +159,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
         KC_ESC,  KC_Q,    KC_W,    KC_E,    KC_R,    KC_T,                               KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,    KC_CAPS,
         KC_BSPC, KC_A,    HM_S,    HM_D,    HM_F,    KC_G,                               KC_H,    HM_J,    HM_K,    HM_L,    KC_SCLN, KC_QUOT,
         KC_ENT,  KC_Z,    KC_X,    KC_C,    KC_V,    KC_B,                               KC_N,    KC_M,    KC_COMM, KC_DOT,  KC_SLSH, KC_RSFT,
-                                            KC_TAB, MO(_EXT), SFT_SPC,          KC_BSPC, MO(_SYM), KC_ENT
+                                            KC_TAB, MO(_EXT), SFT_SPC,          SFT_BSPC, MO(_SYM), KC_ENT
     ),
 
     /*
@@ -239,21 +239,21 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     ),
 
     /*
-     * SETT Layer - Settings (Bootloader, EEPROM Clear)
+     * SETT Layer - Settings + Mouse
      * ┌─────┬─────┬─────┬─────┬─────┬─────┐   ┌─────┬─────┬─────┬─────┬─────┬─────┐
-     * │     │BOOT │     │     │     │     │   │     │     │     │     │BOOT │     │
+     * │     │BOOT │     │     │     │     │   │     │WH_UP│MS_UP│     │BOOT │     │
      * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-     * │     │     │ CTL │ ALT │ GUI │     │   │     │     │     │     │     │     │
+     * │     │     │ CTL │ ALT │ GUI │     │   │     │MS_LT│MS_DN│MS_RT│     │     │
      * ├─────┼─────┼─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┼─────┼─────┤
-     * │     │EECLR│     │     │     │     │   │     │     │     │     │EECLR│     │
+     * │     │EECLR│     │     │     │     │   │     │WH_DN│WH_LT│WH_RT│EECLR│     │
      * └─────┴─────┴─────┼─────┼─────┼─────┤   ├─────┼─────┼─────┼─────┴─────┴─────┘
-     *                   │     │     │     │   │     │     │     │
+     *                   │     │     │     │   │BTN1 │BTN2 │     │
      *                   └─────┴─────┴─────┘   └─────┴─────┴─────┘
      */
     [_SETT] = LAYOUT_split_3x6_3(
-        _______, QK_BOOT, _______, _______, _______, _______,                            _______, _______, _______, _______, QK_BOOT, _______,
-        _______, _______, KC_LCTL, KC_LALT, KC_LGUI, _______,                            _______, _______, _______, _______, _______, _______,
-        _______, EE_CLR,  _______, _______, _______, _______,                            _______, _______, _______, _______, EE_CLR,  _______,
-                                            _______, _______, _______,          _______, _______, _______
+        _______, QK_BOOT, _______, _______, _______, _______,                            _______, MS_WHLU, MS_UP,   _______, QK_BOOT, _______,
+        _______, _______, KC_LCTL, KC_LALT, KC_LGUI, _______,                            _______, MS_LEFT, MS_DOWN, MS_RGHT, _______, _______,
+        _______, EE_CLR,  _______, _______, _______, _______,                            _______, MS_WHLD, MS_WHLL, MS_WHLR, EE_CLR,  _______,
+                                            _______, _______, _______,          MS_BTN1, MS_BTN2, _______
     )
 };
